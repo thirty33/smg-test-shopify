@@ -10,6 +10,31 @@
     },
     "product-grid": {
       "type": "product-list",
+      "blocks": {
+        "product_item_V3YbgF": {
+          "type": "product-item",
+          "settings": {
+            "product": "paquete-de-20-horas-de-desarrollo"
+          }
+        },
+        "product_item_MtgK7n": {
+          "type": "product-item",
+          "settings": {
+            "product": "paquete-de-40-horas-de-desarrollo"
+          }
+        },
+        "product_item_q83mhb": {
+          "type": "product-item",
+          "settings": {
+            "product": "paquete-de-60-horas-de-desarrollo"
+          }
+        }
+      },
+      "block_order": [
+        "product_item_V3YbgF",
+        "product_item_MtgK7n",
+        "product_item_q83mhb"
+      ],
       "settings": {
       }
     }

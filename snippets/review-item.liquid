@@ -1,0 +1,40 @@
+{% comment %}
+  Renders an service product for a given product list to either show the image or not.
+
+  Accepts:
+  - user_image: {String} string
+  - review_name: {String} string
+  - review_rating: {String} string
+  - review_comment: {Object} Product Liquid object (optional)
+
+  Usage:
+  {% render 'review-item' user_image: user_image, review_name: review_name, review_rating: review_rating, review_comment: review_comment %}
+{% endcomment %}
+
+<article class="shadow-xl p-4 w-full md:w-4/12 mx-1.5 my-1.5 md:mx-0 md:my-0">
+  <div class="flex items-center mb-4">
+    <img
+      class="w-10 h-10 me-4 rounded-full"
+      src="{{ user_image | image_url }}"
+      alt=""
+      width="10"
+      height="10"
+    >
+    <div class="font-medium dark:text-white">
+      <p>{{ review_name }}</p>
+    </div>
+  </div>
+  <div class="flex items-center mb-1 space-x-4 rtl:space-x-reverse">
+    <div class="flex items-center mb-1 space-x-1 rtl:space-x-reverse">
+      {%- assign upper_limit_active_stars = review_rating | plus: 0 -%}
+      {%- assign upper_limit_deactive_stars = 5 | minus: upper_limit_active_stars -%}
+      {% for i in (1..upper_limit_active_stars) -%}
+        {% render 'start-review', color_class: 'text-yellow-300' %}
+      {%- endfor %}
+      {% for i in (1..upper_limit_deactive_stars) -%}
+        {% render 'start-review', color_class: 'text-gray-300 dark:text-gray-500' %}
+      {%- endfor %}
+    </div>
+    <h3 class="ms-2 text-3xl font-semibold text-gray-900 dark:text-white">{{ review_comment }}</h3>
+  </div>
+</article>

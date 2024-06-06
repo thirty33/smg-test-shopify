@@ -17,7 +17,7 @@ if (!customElements.get('product-form')) {
         this.hideErrors = this.dataset.hideErrors === 'true';
       }
 
-      onSubmitHandler(evt) {
+      async onSubmitHandler(evt) {
         evt.preventDefault();
         if (this.submitButton.getAttribute('aria-disabled') === 'true') return;
 
@@ -40,9 +40,127 @@ if (!customElements.get('product-form')) {
           formData.append('sections_url', window.location.pathname);
           this.cart.setActiveElement(document.activeElement);
         }
+
         config.body = formData;
 
-        fetch(`${routes.cart_add_url}`, config)
+        const clearCart = await this.clearCartRequest();
+
+        if (clearCart.status != 200) {
+          publish(PUB_SUB_EVENTS.cartError, {
+            source: 'product-form',
+            productVariantId: formData.get('id'),
+            errors: clearCart.errors || clearCart.description,
+            message: 'there is an error cleaning the car',
+          });
+
+          this.handleErrorMessage('there is an error cleaning the car');
+          this.resetState();
+
+          return;
+        }
+
+        await this.addGiftProductToCart();
+
+        this.addNewItemToCart(config, formData);
+      }
+
+      handleErrorMessage(errorMessage = false) {
+        if (this.hideErrors) return;
+
+        this.errorMessageWrapper =
+          this.errorMessageWrapper || this.querySelector('.product-form__error-message-wrapper');
+        if (!this.errorMessageWrapper) return;
+        this.errorMessage = this.errorMessage || this.errorMessageWrapper.querySelector('.product-form__error-message');
+
+        this.errorMessageWrapper.toggleAttribute('hidden', !errorMessage);
+
+        if (errorMessage) {
+          this.errorMessage.textContent = errorMessage;
+        }
+      }
+
+      toggleSubmitButton(disable = true, text) {
+        if (disable) {
+          this.submitButton.setAttribute('disabled', 'disabled');
+          if (text) this.submitButtonText.textContent = text;
+        } else {
+          this.submitButton.removeAttribute('disabled');
+          this.submitButtonText.textContent = window.variantStrings.addToCart;
+        }
+      }
+
+      get variantIdInput() {
+        return this.form.querySelector('[name=id]');
+      }
+
+      /**
+       * clear cart before add a new item into cart
+       * @return {Object} response
+       */
+      async clearCartRequest() {
+        return await fetch(`${routes.clear_url}`, {
+          method: 'POST',
+        })
+          .then((response) => response)
+          .catch((e) => {
+            console.error(e);
+          })
+          .finally(() => {});
+      }
+
+      /**
+       * return id of gift item
+       * @return {int} id
+       */
+      async getGiftProductToCart() {
+        const { variants } = await fetch(`${routes.get_product}` + 'products/camisa-smg-lunch-box.js')
+          .then((response) => response.json())
+          .catch((error) => {
+            console.error(error);
+          });
+
+        const [firstVariant, restVariants] = variants;
+
+        return firstVariant.id;
+      }
+
+      /**
+       * add gift item into cart
+       * @return {Object} response
+       */
+      async addGiftProductToCart() {
+        const giftProductId = await this.getGiftProductToCart();
+
+        let formData = {
+          items: [
+            {
+              id: giftProductId,
+              quantity: 1,
+            },
+          ],
+        };
+
+        return await fetch(`${routes.cart_add_url}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        })
+          .then((response) => response)
+          .catch((error) => {
+            console.error('add gift error:', error);
+          });
+      }
+
+      /**
+       * add new item into cart
+       * @param {fetchConfig} config
+       * @param {formData} FormData
+       * @return {Object} response
+       */
+      async addNewItemToCart(config, formData) {
+        return await fetch(`${routes.cart_add_url}`, config)
           .then((response) => response.json())
           .then((response) => {
             if (response.status) {
@@ -93,40 +211,16 @@ if (!customElements.get('product-form')) {
             console.error(e);
           })
           .finally(() => {
-            this.submitButton.classList.remove('loading');
-            if (this.cart && this.cart.classList.contains('is-empty')) this.cart.classList.remove('is-empty');
-            if (!this.error) this.submitButton.removeAttribute('aria-disabled');
-            this.querySelector('.loading__spinner').classList.add('hidden');
+            this.resetState();
           });
       }
 
-      handleErrorMessage(errorMessage = false) {
-        if (this.hideErrors) return;
-
-        this.errorMessageWrapper =
-          this.errorMessageWrapper || this.querySelector('.product-form__error-message-wrapper');
-        if (!this.errorMessageWrapper) return;
-        this.errorMessage = this.errorMessage || this.errorMessageWrapper.querySelector('.product-form__error-message');
-
-        this.errorMessageWrapper.toggleAttribute('hidden', !errorMessage);
-
-        if (errorMessage) {
-          this.errorMessage.textContent = errorMessage;
-        }
-      }
-
-      toggleSubmitButton(disable = true, text) {
-        if (disable) {
-          this.submitButton.setAttribute('disabled', 'disabled');
-          if (text) this.submitButtonText.textContent = text;
-        } else {
-          this.submitButton.removeAttribute('disabled');
-          this.submitButtonText.textContent = window.variantStrings.addToCart;
-        }
-      }
-
-      get variantIdInput() {
-        return this.form.querySelector('[name=id]');
+      //resent UI state
+      resetState() {
+        this.submitButton.classList.remove('loading');
+        if (this.cart && this.cart.classList.contains('is-empty')) this.cart.classList.remove('is-empty');
+        if (!this.error) this.submitButton.removeAttribute('aria-disabled');
+        this.querySelector('.loading__spinner').classList.add('hidden');
       }
     }
   );

@@ -1346,7 +1346,8 @@ button.shopify-payment-button__button--unbranded {
 }
 
 .button.loading > .loading__spinner .spinner {
-  width: fit-content;
+  /* width: fit-content; */
+  width: auto;
 }
 
 .button.loading > .loading__spinner .path {

@@ -251,7 +251,10 @@
       }
     {% endstyle %}
 
+    {{ 'style.css' | asset_url | stylesheet_tag }}
     {{ 'base.css' | asset_url | stylesheet_tag }}
+
+    {{ 'swiper.min.css' | asset_url | stylesheet_tag }}
 
     {%- unless settings.type_body_font.system? -%}
       {% comment %}theme-check-disable AssetPreload{% endcomment %}
@@ -315,6 +318,8 @@
         cart_update_url: '{{ routes.cart_update_url }}',
         cart_url: '{{ routes.cart_url }}',
         predictive_search_url: '{{ routes.predictive_search_url }}',
+        clear_url: '{{ routes.cart_clear_url }}',
+        get_product: '{{ routes.root_url }}',
       };
 
       window.cartStrings = {

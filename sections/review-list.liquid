@@ -1,0 +1,72 @@
+<div class="font-sans grid justify-center">
+  <div class="w-full md:w-9/12 grid grid-cols-1 md:grid-cols-3 justify-center">
+    {% for item in section.blocks %}
+      {% render 'review-item',
+        user_image: item.settings.review_image,
+        review_name: item.settings.review_name,
+        review_rating: item.settings.review_rating,
+        review_comment: item.settings.review_comment
+      %}
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Review List",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "review-item",
+      "name": "Review Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "review_image",
+          "label": "User Image"
+        },
+        {
+          "type": "text",
+          "id": "review_name",
+          "label": "User Name",
+          "default": "Jonh Doe"
+        },
+        {
+          "type": "select",
+          "id": "review_rating",
+          "label": "Rating of the review",
+          "options": [
+            {
+              "value": "1",
+              "label": "1 star"
+            },
+            {
+              "value": "2",
+              "label": "2 stars"
+            },
+            {
+              "value": "3",
+              "label": "3 stars"
+            },
+            {
+              "value": "4",
+              "label": "4 stars"
+            },
+            {
+              "value": "5",
+              "label": "5 stars"
+            }
+          ],
+          "default": "5"
+        },
+        {
+          "type": "textarea",
+          "id": "review_comment",
+          "label": "Comment of the review",
+          "default": "Thinking to buy another one!"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

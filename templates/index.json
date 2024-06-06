@@ -22,6 +22,8 @@
         "text"
       ],
       "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
         "color_scheme": "scheme-1",
         "full_width": true,
         "padding_top": 40,
@@ -80,6 +82,8 @@
         "text"
       ],
       "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
         "color_scheme": "scheme-1",
         "full_width": true,
         "padding_top": 40,
@@ -93,7 +97,7 @@
           "type": "review-item",
           "settings": {
             "review_image": "shopify:\/\/shop_images\/avatar3.jpg",
-            "review_name": "Jonh Doe",
+            "review_name": "John Doe",
             "review_rating": "5",
             "review_comment": "Thinking to buy another one!"
           }

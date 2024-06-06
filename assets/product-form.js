@@ -17,6 +17,11 @@ if (!customElements.get('product-form')) {
         this.hideErrors = this.dataset.hideErrors === 'true';
       }
 
+      /**
+       *
+       * @param {*} evt
+       * @void
+       */
       async onSubmitHandler(evt) {
         evt.preventDefault();
         if (this.submitButton.getAttribute('aria-disabled') === 'true') return;
@@ -43,23 +48,19 @@ if (!customElements.get('product-form')) {
 
         config.body = formData;
 
+        //clear the cart
         const clearCart = await this.clearCartRequest();
 
-        if (clearCart.status != 200) {
-          publish(PUB_SUB_EVENTS.cartError, {
-            source: 'product-form',
-            productVariantId: formData.get('id'),
-            errors: clearCart.errors || clearCart.description,
-            message: 'there is an error cleaning the car',
-          });
-
-          this.handleErrorMessage('there is an error cleaning the car');
-          this.resetState();
-
+        if (!this.manageHttpErrors(clearCart, formData, 'there is an error cleaning the car')) {
           return;
         }
 
-        await this.addGiftProductToCart();
+        //add gift product
+        const addGift = await this.addGiftProductToCart();
+
+        if (!this.manageHttpErrors(addGift, formData, 'there is an error adding gift item to the car')) {
+          return;
+        }
 
         this.addNewItemToCart(config, formData);
       }
@@ -221,6 +222,31 @@ if (!customElements.get('product-form')) {
         if (this.cart && this.cart.classList.contains('is-empty')) this.cart.classList.remove('is-empty');
         if (!this.error) this.submitButton.removeAttribute('aria-disabled');
         this.querySelector('.loading__spinner').classList.add('hidden');
+      }
+
+      /**
+       * Manage errors with HttpResponses
+       * @param {*} httpResponse
+       * @param {*} formData
+       * @param {*} errorMessage
+       * @returns {boolean}
+       */
+      manageHttpErrors(httpResponse, formData, errorMessage = '') {
+        if (httpResponse.status != 200) {
+          publish(PUB_SUB_EVENTS.cartError, {
+            source: 'product-form',
+            productVariantId: formData.get('id'),
+            errors: httpResponse.errors || httpResponse.description,
+            message: errorMessage,
+          });
+
+          this.handleErrorMessage(errorMessage);
+          this.resetState();
+
+          return false;
+        }
+
+        return true;
       }
     }
   );

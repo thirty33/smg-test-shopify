@@ -10,18 +10,32 @@
     },
     "product-grid": {
       "type": "product-list",
+      "blocks": {
+        "product_item_V3YbgF": {
+          "type": "product-item",
+          "settings": {
+            "product": "paquete-de-20-horas-de-desarrollo"
+          }
+        },
+        "product_item_MtgK7n": {
+          "type": "product-item",
+          "settings": {
+            "product": "paquete-de-40-horas-de-desarrollo"
+          }
+        },
+        "product_item_q83mhb": {
+          "type": "product-item",
+          "settings": {
+            "product": "paquete-de-60-horas-de-desarrollo"
+          }
+        }
+      },
+      "block_order": [
+        "product_item_V3YbgF",
+        "product_item_MtgK7n",
+        "product_item_q83mhb"
+      ],
       "settings": {
-        "products_per_page": 16,
-        "columns_desktop": 4,
-        "image_ratio": "adapt",
-        "show_secondary_image": false,
-        "show_vendor": false,
-        "show_rating": false,
-        "enable_filtering": true,
-        "enable_sorting": true,
-        "columns_mobile": "2",
-        "padding_top": 36,
-        "padding_bottom": 36
       }
     }
   },

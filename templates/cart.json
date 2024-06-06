@@ -3,6 +3,7 @@
     "cart-items": {
       "type": "main-cart-items",
       "settings": {
+        "color_scheme": "",
         "padding_top": 36,
         "padding_bottom": 36
       }
@@ -26,10 +27,38 @@
         "buttons"
       ],
       "settings": {
+        "color_scheme": "",
+        "padding_top": 40,
+        "padding_bottom": 40
       }
     },
     "product-list-section": {
       "type": "product-list",
+      "blocks": {
+        "product_item_zGEt7U": {
+          "type": "product-item",
+          "settings": {
+            "product": "paquete-de-20-horas-de-desarrollo"
+          }
+        },
+        "product_item_gEJjnE": {
+          "type": "product-item",
+          "settings": {
+            "product": "paquete-de-40-horas-de-desarrollo"
+          }
+        },
+        "product_item_WNJbAm": {
+          "type": "product-item",
+          "settings": {
+            "product": "paquete-de-60-horas-de-desarrollo"
+          }
+        }
+      },
+      "block_order": [
+        "product_item_zGEt7U",
+        "product_item_gEJjnE",
+        "product_item_WNJbAm"
+      ],
       "settings": {
       }
     }

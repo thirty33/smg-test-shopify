@@ -29,7 +29,34 @@
       }
     },
     "product-list-section": {
-      "type": "product-list"
+      "type": "product-list",
+      "blocks": {
+        "product_item_4KjHDH": {
+          "type": "product-item",
+          "settings": {
+            "product": "paquete-de-20-horas-de-desarrollo"
+          }
+        },
+        "product_item_tQEbbN": {
+          "type": "product-item",
+          "settings": {
+            "product": "paquete-de-40-horas-de-desarrollo"
+          }
+        },
+        "product_item_t8yaDe": {
+          "type": "product-item",
+          "settings": {
+            "product": "paquete-de-60-horas-de-desarrollo"
+          }
+        }
+      },
+      "block_order": [
+        "product_item_4KjHDH",
+        "product_item_tQEbbN",
+        "product_item_t8yaDe"
+      ],
+      "settings": {
+      }
     },
     "rich_text-reviews": {
       "type": "rich-text",
@@ -60,7 +87,33 @@
       }
     },
     "review-list-section": {
-      "type": "review-list"
+      "type": "review-list",
+      "blocks": {
+        "review_item_YDkU6h": {
+          "type": "review-item",
+          "settings": {
+            "review_image": "shopify:\/\/shop_images\/avatar3.jpg",
+            "review_name": "Jonh Doe",
+            "review_rating": "5",
+            "review_comment": "Thinking to buy another one!"
+          }
+        },
+        "review_item_DwpC4B": {
+          "type": "review-item",
+          "settings": {
+            "review_image": "shopify:\/\/shop_images\/avatar.jpg",
+            "review_name": "Joel Suarez",
+            "review_rating": "4",
+            "review_comment": "Thinking to buy another one!"
+          }
+        }
+      },
+      "block_order": [
+        "review_item_YDkU6h",
+        "review_item_DwpC4B"
+      ],
+      "settings": {
+      }
     }
   },
   "order": [

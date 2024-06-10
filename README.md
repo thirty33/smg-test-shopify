@@ -35,7 +35,9 @@
 
 ![alt text](image-5.png)
 
-- this eschema is developed into "sections/product-list"
+- this eschema is developed into "sections/review-list"
+
+![alt text](image-6.png)
 
 # ajax add to cart documentation:
 
